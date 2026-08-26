@@ -15,7 +15,13 @@ function CrowIcon({ className = "w-6 h-6" }: { className?: string }) {
       aria-hidden="true"
     >
       <path d="M1.5 11.5L8.5 7L15 7.5L22 13.5L18.5 21L11.5 19.5L8.5 14.5L1.5 11.5Z" />
-      <circle cx="12.5" cy="9.5" r="1" fill="#ffffff" />
+      <circle
+        cx="12.5"
+        cy="9.5"
+        r="1.1"
+        fill="#ffffff"
+        className="transition-transform duration-300 origin-[12.5px_9.5px] group-hover:scale-150"
+      />
     </svg>
   );
 }
@@ -23,15 +29,23 @@ function CrowIcon({ className = "w-6 h-6" }: { className?: string }) {
 // Ikona Menu i X
 function AnimatedMenuIcon({ isOpen }: { isOpen: boolean }) {
   return (
-    <div className="relative w-4 h-4 flex items-center justify-center pointer-events-none transform-gpu">
+    <div
+      className={`relative w-4 h-4 flex items-center justify-center pointer-events-none transform-gpu transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+        isOpen ? "group-hover:rotate-90 group-hover:scale-110" : ""
+      }`}
+    >
       <span
-        className={`absolute h-0.5 w-4 bg-current rounded-full transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-          isOpen ? "rotate-45 translate-y-0" : "-translate-y-0.75"
+        className={`absolute h-0.5 w-4 bg-current rounded-full transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+          isOpen
+            ? "rotate-45 translate-y-0"
+            : "-translate-y-0.75 group-hover:-translate-x-0.5"
         }`}
       />
       <span
-        className={`absolute h-0.5 w-4 bg-current rounded-full transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-          isOpen ? "-rotate-45 translate-y-0" : "translate-y-0.75"
+        className={`absolute h-0.5 w-4 bg-current rounded-full transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+          isOpen
+            ? "-rotate-45 translate-y-0"
+            : "translate-y-0.75 group-hover:translate-x-0.5"
         }`}
       />
     </div>
@@ -47,6 +61,7 @@ export default function Navbar() {
 
   const nav = t.nav;
 
+  // Wejście na start
   useEffect(() => {
     const timer = setTimeout(() => {
       setHasMounted(true);
@@ -85,20 +100,21 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Kontener paska*/}
+      {/* Pasek główny */}
       <header
         className={`fixed top-0 left-0 w-full z-50 pointer-events-none flex justify-center transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           isPill ? "py-4 px-4" : "p-6 md:px-14 md:py-10"
         }`}
       >
+        {/* Kontener paska w pigułce */}
         <div
-          className={`pointer-events-auto w-full flex items-center justify-between transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+          className={`pointer-events-auto w-full flex items-center justify-between transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
             isPill
-              ? "max-w-52.5 bg-white/90 backdrop-blur-md border border-neutral-200/90 shadow-[0_8px_30px_rgb(0,0,0,0.06)] rounded-full px-4 py-2 gap-3.5"
+              ? "max-w-55 bg-white/90 backdrop-blur-md border border-neutral-200/90 shadow-[0_8px_30px_rgb(0,0,0,0.06)] rounded-full px-4 py-2 gap-3.5 hover:shadow-[0_16px_40px_rgb(0,0,0,0.12)] hover:border-neutral-300 hover:scale-[1.025] hover:-translate-y-0.5"
               : "max-w-7xl bg-transparent border-transparent shadow-none px-2 py-0 gap-6"
           }`}
         >
-          {/* Lewa strona (wrona i logo) */}
+          {/* Lewa strona (logo) */}
           <div
             className={`flex items-center transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${
               hasMounted
@@ -113,7 +129,7 @@ export default function Navbar() {
               aria-label="Filip Wrona Homepage"
             >
               <CrowIcon
-                className={`shrink-0 text-black transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-rotate-6 ${
+                className={`shrink-0 text-black transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-rotate-12 group-hover:scale-105 ${
                   isPill ? "w-5 h-5" : "w-7 h-7 md:w-8 md:h-8"
                 }`}
               />
@@ -124,7 +140,7 @@ export default function Navbar() {
                     : "max-w-70 opacity-100 translate-x-0 scale-100"
                 }`}
               >
-                <span className="font-black tracking-tight uppercase leading-none text-lg sm:text-xl md:text-2xl pl-0.5">
+                <span className="font-black tracking-tight uppercase leading-none text-lg sm:text-xl md:text-2xl pl-0.5 transition-all duration-300 group-hover:tracking-normal">
                   Filip Wrona
                 </span>
               </div>
@@ -148,25 +164,29 @@ export default function Navbar() {
               }`}
             />
 
-            {/* Przełącznik języka */}
-            <div className="flex items-center font-mono text-xs tracking-wider uppercase select-none shrink-0 leading-none">
+            {/* Pigułka zmiany języka */}
+            <div className="relative flex items-center p-0.5 bg-neutral-100/90 rounded-full font-mono text-[11px] tracking-wider uppercase select-none shrink-0 border border-neutral-200/70">
+              <span
+                className={`absolute top-0.5 bottom-0.5 w-[calc(50%-2px)] bg-white rounded-full shadow-[0_1px_3px_rgba(0,0,0,0.1)] transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+                  lang === "pl" ? "left-0.5" : "left-[50%]"
+                }`}
+              />
               <button
                 onClick={() => setLang("pl")}
-                className={`transition-all duration-300 px-1 py-0.5 rounded cursor-pointer ${
+                className={`relative z-10 px-2 py-0.5 transition-colors duration-200 cursor-pointer ${
                   lang === "pl"
-                    ? "font-bold text-black scale-105"
-                    : "text-neutral-400 hover:text-black"
+                    ? "font-bold text-black"
+                    : "text-neutral-400 hover:text-neutral-700"
                 }`}
               >
                 PL
               </button>
-              <span className="text-neutral-300 mx-0.5">/</span>
               <button
                 onClick={() => setLang("en")}
-                className={`transition-all duration-300 px-1 py-0.5 rounded cursor-pointer ${
+                className={`relative z-10 px-2 py-0.5 transition-colors duration-200 cursor-pointer ${
                   lang === "en"
-                    ? "font-bold text-black scale-105"
-                    : "text-neutral-400 hover:text-black"
+                    ? "font-bold text-black"
+                    : "text-neutral-400 hover:text-neutral-700"
                 }`}
               >
                 EN
@@ -182,12 +202,12 @@ export default function Navbar() {
               }`}
             />
 
-            {/* Przycisk Menu */}
+            {/* Przycisk Menu i X */}
             <button
               onClick={() => setIsOpen(!isOpen)}
               aria-expanded={isOpen}
               aria-label={isOpen ? nav.close : nav.menu}
-              className="flex items-center gap-2 cursor-pointer text-black hover:opacity-60 transition-all duration-300 shrink-0"
+              className="group flex items-center gap-2 cursor-pointer text-black hover:opacity-80 transition-all duration-300 shrink-0"
             >
               <div
                 className={`transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] overflow-hidden whitespace-nowrap ${
@@ -196,7 +216,7 @@ export default function Navbar() {
                     : "max-w-22.5 opacity-100 translate-x-0 scale-100"
                 }`}
               >
-                <span className="text-xs md:text-sm font-bold tracking-widest uppercase">
+                <span className="text-xs md:text-sm font-bold tracking-widest uppercase transition-opacity group-hover:opacity-75">
                   {isOpen ? nav.close : nav.menu}
                 </span>
               </div>
@@ -226,6 +246,7 @@ export default function Navbar() {
             {nav.items.map((item, index) => {
               const isHovered = hoveredIndex === index;
               const isAnyHovered = hoveredIndex !== null;
+              const formattedIndex = `0${index + 1}`;
 
               return (
                 <div
@@ -243,13 +264,30 @@ export default function Navbar() {
                     href={item.href}
                     onMouseEnter={() => setHoveredIndex(index)}
                     onClick={() => setIsOpen(false)}
-                    className={`inline-block text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight uppercase text-black transition-all duration-300 ease-out select-none ${
+                    className={`group/link relative inline-flex items-baseline gap-3 sm:gap-6 text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight uppercase text-black transition-all duration-300 ease-out select-none ${
                       isAnyHovered && !isHovered
                         ? "opacity-15 blur-[6px] scale-[0.97]"
                         : "opacity-100 blur-0 scale-100 hover:scale-[1.02]"
                     }`}
                   >
-                    {item.label}
+                    <span
+                      className={`font-mono text-xs sm:text-sm md:text-xl font-normal transition-all duration-300 ${
+                        isHovered
+                          ? "opacity-100 translate-x-0 text-black"
+                          : "opacity-0 -translate-x-3 text-neutral-400"
+                      }`}
+                    >
+                      {formattedIndex}
+                    </span>
+
+                    <span className="relative">
+                      {item.label}
+                      <span
+                        className={`absolute left-0 -bottom-1 sm:-bottom-2 w-full h-0.5 sm:h-0.75 bg-black transition-transform duration-300 ease-out origin-left ${
+                          isHovered ? "scale-x-100" : "scale-x-0"
+                        }`}
+                      />
+                    </span>
                   </a>
                 </div>
               );
@@ -259,44 +297,24 @@ export default function Navbar() {
           {/* Stopka menu */}
           <div
             style={{ transitionDelay: isOpen ? "320ms" : "0ms" }}
-            className={`flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-neutral-100 pt-6 mt-4 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+            className={`flex items-center justify-center gap-8 md:gap-14 font-mono text-xs sm:text-sm text-neutral-500 border-t border-neutral-100 pt-6 mt-4 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
               isOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             }`}
           >
-            <div className="flex items-center gap-6 md:gap-14 font-mono text-xs sm:text-sm text-neutral-500">
-              {nav.socials.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-black hover:-translate-y-0.5 transition-all duration-200"
-                >
-                  {social.label} ↗
-                </a>
-              ))}
-            </div>
-
-            <div className="flex items-center font-mono text-xs text-neutral-400 uppercase">
-              <span className="mr-3">LANGUAGE:</span>
-              <button
-                onClick={() => setLang("pl")}
-                className={`cursor-pointer transition-colors ${
-                  lang === "pl" ? "text-black font-bold" : "hover:text-black"
-                }`}
+            {nav.socials.map((social) => (
+              <a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/social inline-flex items-center gap-1 hover:text-black transition-colors duration-200"
               >
-                PL
-              </button>
-              <span className="mx-2">|</span>
-              <button
-                onClick={() => setLang("en")}
-                className={`cursor-pointer transition-colors ${
-                  lang === "en" ? "text-black font-bold" : "hover:text-black"
-                }`}
-              >
-                EN
-              </button>
-            </div>
+                <span>{social.label}</span>
+                <span className="transition-transform duration-200 group-hover/social:translate-x-1 group-hover/social:-translate-y-0.5">
+                  ↗
+                </span>
+              </a>
+            ))}
           </div>
         </div>
       </div>
