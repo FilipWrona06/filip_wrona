@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 
-// Ikona Wrony
+// Wrona
 function CrowIcon({ className = "w-6 h-6" }: { className?: string }) {
   return (
     <svg
@@ -20,7 +20,7 @@ function CrowIcon({ className = "w-6 h-6" }: { className?: string }) {
   );
 }
 
-// Ikona Menu / X
+// Ikona Menu i X
 function AnimatedMenuIcon({ isOpen }: { isOpen: boolean }) {
   return (
     <div className="relative w-4 h-4 flex items-center justify-center pointer-events-none transform-gpu">
@@ -47,7 +47,6 @@ export default function Navbar() {
 
   const nav = t.nav;
 
-  // Animacja wejścia
   useEffect(() => {
     const timer = setTimeout(() => {
       setHasMounted(true);
@@ -86,7 +85,7 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Kontener paska */}
+      {/* Kontener paska*/}
       <header
         className={`fixed top-0 left-0 w-full z-50 pointer-events-none flex justify-center transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           isPill ? "py-4 px-4" : "p-6 md:px-14 md:py-10"
@@ -99,7 +98,7 @@ export default function Navbar() {
               : "max-w-7xl bg-transparent border-transparent shadow-none px-2 py-0 gap-6"
           }`}
         >
-          {/* Lewa strona wejście */}
+          {/* Lewa strona (wrona i logo) */}
           <div
             className={`flex items-center transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${
               hasMounted
@@ -132,7 +131,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Prawa strona wejście */}
+          {/* Prawa strona (język i menu) */}
           <div
             className={`flex items-center gap-3 sm:gap-4 shrink-0 transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${
               hasMounted
@@ -212,92 +211,92 @@ export default function Navbar() {
       <div
         role="dialog"
         aria-modal="true"
-        className={`fixed inset-0 z-40 bg-white/98 backdrop-blur-xl flex flex-col justify-between px-8 py-10 md:px-14 md:py-12 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+        className={`fixed inset-0 z-40 bg-white/98 backdrop-blur-xl overflow-y-auto transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           isOpen
             ? "opacity-100 pointer-events-auto scale-100"
             : "opacity-0 pointer-events-none scale-[0.99] blur-sm"
         }`}
       >
-        <div className="h-12" />
+        <div className="min-h-full flex flex-col justify-between px-8 pt-24 pb-8 md:px-14 md:pt-32 md:pb-12 max-w-7xl mx-auto">
+          {/* Główne linki */}
+          <nav
+            onMouseLeave={() => setHoveredIndex(null)}
+            className="flex flex-col items-center justify-center space-y-2 sm:space-y-3 md:space-y-6 my-auto py-6"
+          >
+            {nav.items.map((item, index) => {
+              const isHovered = hoveredIndex === index;
+              const isAnyHovered = hoveredIndex !== null;
 
-        {/* Linki */}
-        <nav
-          onMouseLeave={() => setHoveredIndex(null)}
-          className="flex flex-col items-center justify-center space-y-3 md:space-y-6"
-        >
-          {nav.items.map((item, index) => {
-            const isHovered = hoveredIndex === index;
-            const isAnyHovered = hoveredIndex !== null;
-
-            return (
-              <div
-                key={item.label}
-                style={{
-                  transitionDelay: isOpen ? `${index * 60 + 80}ms` : "0ms",
-                }}
-                className={`transform transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-                  isOpen
-                    ? "translate-y-0 opacity-100 blur-0"
-                    : "translate-y-8 opacity-0 blur-xs"
-                }`}
-              >
-                <a
-                  href={item.href}
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onClick={() => setIsOpen(false)}
-                  className={`inline-block text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight uppercase text-black transition-all duration-300 ease-out select-none ${
-                    isAnyHovered && !isHovered
-                      ? "opacity-15 blur-[6px] scale-[0.97]"
-                      : "opacity-100 blur-0 scale-100 hover:scale-[1.02]"
+              return (
+                <div
+                  key={item.label}
+                  style={{
+                    transitionDelay: isOpen ? `${index * 60 + 80}ms` : "0ms",
+                  }}
+                  className={`transform transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+                    isOpen
+                      ? "translate-y-0 opacity-100 blur-0"
+                      : "translate-y-8 opacity-0 blur-xs"
                   }`}
                 >
-                  {item.label}
+                  <a
+                    href={item.href}
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onClick={() => setIsOpen(false)}
+                    className={`inline-block text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight uppercase text-black transition-all duration-300 ease-out select-none ${
+                      isAnyHovered && !isHovered
+                        ? "opacity-15 blur-[6px] scale-[0.97]"
+                        : "opacity-100 blur-0 scale-100 hover:scale-[1.02]"
+                    }`}
+                  >
+                    {item.label}
+                  </a>
+                </div>
+              );
+            })}
+          </nav>
+
+          {/* Stopka menu */}
+          <div
+            style={{ transitionDelay: isOpen ? "320ms" : "0ms" }}
+            className={`flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-neutral-100 pt-6 mt-4 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+              isOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+            }`}
+          >
+            <div className="flex items-center gap-6 md:gap-14 font-mono text-xs sm:text-sm text-neutral-500">
+              {nav.socials.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-black hover:-translate-y-0.5 transition-all duration-200"
+                >
+                  {social.label} ↗
                 </a>
-              </div>
-            );
-          })}
-        </nav>
+              ))}
+            </div>
 
-        {/* Stopka menu */}
-        <div
-          style={{ transitionDelay: isOpen ? "320ms" : "0ms" }}
-          className={`flex flex-col sm:flex-row items-center justify-between gap-6 border-t border-neutral-100 pt-6 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-            isOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-          }`}
-        >
-          <div className="flex items-center gap-8 md:gap-14 font-mono text-xs sm:text-sm text-neutral-500">
-            {nav.socials.map((social) => (
-              <a
-                key={social.label}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-black hover:-translate-y-0.5 transition-all duration-200"
+            <div className="flex items-center font-mono text-xs text-neutral-400 uppercase">
+              <span className="mr-3">LANGUAGE:</span>
+              <button
+                onClick={() => setLang("pl")}
+                className={`cursor-pointer transition-colors ${
+                  lang === "pl" ? "text-black font-bold" : "hover:text-black"
+                }`}
               >
-                {social.label} ↗
-              </a>
-            ))}
-          </div>
-
-          <div className="flex items-center font-mono text-xs text-neutral-400 uppercase">
-            <span className="mr-3">LANGUAGE:</span>
-            <button
-              onClick={() => setLang("pl")}
-              className={`cursor-pointer transition-colors ${
-                lang === "pl" ? "text-black font-bold" : "hover:text-black"
-              }`}
-            >
-              PL
-            </button>
-            <span className="mx-2">|</span>
-            <button
-              onClick={() => setLang("en")}
-              className={`cursor-pointer transition-colors ${
-                lang === "en" ? "text-black font-bold" : "hover:text-black"
-              }`}
-            >
-              EN
-            </button>
+                PL
+              </button>
+              <span className="mx-2">|</span>
+              <button
+                onClick={() => setLang("en")}
+                className={`cursor-pointer transition-colors ${
+                  lang === "en" ? "text-black font-bold" : "hover:text-black"
+                }`}
+              >
+                EN
+              </button>
+            </div>
           </div>
         </div>
       </div>
