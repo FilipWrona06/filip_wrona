@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 
-// Wrona
+// ─── Sygnet wrony z reagującym okiem na hover ─────────────────────────────────
 function CrowIcon({ className = "w-6 h-6" }: { className?: string }) {
   return (
     <svg
@@ -26,7 +26,7 @@ function CrowIcon({ className = "w-6 h-6" }: { className?: string }) {
   );
 }
 
-// Ikona Menu i X
+// ─── Kreski menu: rozsuwanie przy MENU oraz obrót 90° przy X ──────────────────
 function AnimatedMenuIcon({ isOpen }: { isOpen: boolean }) {
   return (
     <div
@@ -100,13 +100,13 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Pasek główny */}
+      {/* ─── Pasek główny ────────────────────────────────────────────────── */}
       <header
         className={`fixed top-0 left-0 w-full z-50 pointer-events-none flex justify-center transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           isPill ? "py-4 px-4" : "p-6 md:px-14 md:py-10"
         }`}
       >
-        {/* Kontener paska w pigułce */}
+        {/* Kontener paska z efektem 3D Float na hoverze w pigułce */}
         <div
           className={`pointer-events-auto w-full flex items-center justify-between transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
             isPill
@@ -114,7 +114,7 @@ export default function Navbar() {
               : "max-w-7xl bg-transparent border-transparent shadow-none px-2 py-0 gap-6"
           }`}
         >
-          {/* Lewa strona (logo) */}
+          {/* LEWA STRONA: Interaktywne Logo */}
           <div
             className={`flex items-center transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${
               hasMounted
@@ -147,7 +147,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Prawa strona (język i menu) */}
+          {/* PRAWA STRONA: Języki i Menu */}
           <div
             className={`flex items-center gap-3 sm:gap-4 shrink-0 transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${
               hasMounted
@@ -164,7 +164,7 @@ export default function Navbar() {
               }`}
             />
 
-            {/* Pigułka zmiany języka */}
+            {/* Przełącznik języka */}
             <div className="relative flex items-center p-0.5 bg-neutral-100/90 rounded-full font-mono text-[11px] tracking-wider uppercase select-none shrink-0 border border-neutral-200/70">
               <span
                 className={`absolute top-0.5 bottom-0.5 w-[calc(50%-2px)] bg-white rounded-full shadow-[0_1px_3px_rgba(0,0,0,0.1)] transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ${
@@ -202,7 +202,7 @@ export default function Navbar() {
               }`}
             />
 
-            {/* Przycisk Menu i X */}
+            {/* Przycisk Menu / Close */}
             <button
               onClick={() => setIsOpen(!isOpen)}
               aria-expanded={isOpen}
@@ -227,21 +227,21 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Pełnoekranowy Overlay Menu */}
+      {/* ─── Pełnoekranowy Overlay Menu (Idealne dopasowanie bez scrollbara) ─── */}
       <div
         role="dialog"
         aria-modal="true"
-        className={`fixed inset-0 z-40 bg-white/98 backdrop-blur-xl overflow-y-auto transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+        className={`fixed inset-0 z-40 bg-white/98 backdrop-blur-xl h-screen overflow-hidden scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           isOpen
             ? "opacity-100 pointer-events-auto scale-100"
             : "opacity-0 pointer-events-none scale-[0.99] blur-sm"
         }`}
       >
-        <div className="min-h-full flex flex-col justify-between px-8 pt-24 pb-8 md:px-14 md:pt-32 md:pb-12 max-w-7xl mx-auto">
-          {/* Główne linki */}
+        <div className="h-full flex flex-col justify-between px-8 pt-20 pb-6 md:px-14 md:pt-24 md:pb-8 max-w-7xl mx-auto">
+          {/* Główne linki z dopasowaną wielkością i odstępami – 100% w kadrze */}
           <nav
             onMouseLeave={() => setHoveredIndex(null)}
-            className="flex flex-col items-center justify-center space-y-2 sm:space-y-3 md:space-y-6 my-auto py-6"
+            className="flex flex-col items-center justify-center space-y-1 sm:space-y-2 md:space-y-3 lg:space-y-3.5 my-auto"
           >
             {nav.items.map((item, index) => {
               const isHovered = hoveredIndex === index;
@@ -252,26 +252,27 @@ export default function Navbar() {
                 <div
                   key={item.label}
                   style={{
-                    transitionDelay: isOpen ? `${index * 60 + 80}ms` : "0ms",
+                    transitionDelay: isOpen ? `${index * 45 + 50}ms` : "0ms",
                   }}
                   className={`transform transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
                     isOpen
                       ? "translate-y-0 opacity-100 blur-0"
-                      : "translate-y-8 opacity-0 blur-xs"
+                      : "translate-y-6 opacity-0 blur-[3px]"
                   }`}
                 >
                   <a
                     href={item.href}
                     onMouseEnter={() => setHoveredIndex(index)}
                     onClick={() => setIsOpen(false)}
-                    className={`group/link relative inline-flex items-baseline gap-3 sm:gap-6 text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight uppercase text-black transition-all duration-300 ease-out select-none ${
+                    className={`group/link relative inline-flex items-baseline gap-2.5 sm:gap-4 md:gap-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight uppercase text-black transition-all duration-300 ease-out select-none ${
                       isAnyHovered && !isHovered
                         ? "opacity-15 blur-[6px] scale-[0.97]"
                         : "opacity-100 blur-0 scale-100 hover:scale-[1.02]"
                     }`}
                   >
+                    {/* Wsuwający się indeks numeryczny */}
                     <span
-                      className={`font-mono text-xs sm:text-sm md:text-xl font-normal transition-all duration-300 ${
+                      className={`font-mono text-xs sm:text-sm md:text-lg font-normal transition-all duration-300 ${
                         isHovered
                           ? "opacity-100 translate-x-0 text-black"
                           : "opacity-0 -translate-x-3 text-neutral-400"
@@ -280,10 +281,11 @@ export default function Navbar() {
                       {formattedIndex}
                     </span>
 
+                    {/* Tekst z architektoniczną linią pod spodem */}
                     <span className="relative">
                       {item.label}
                       <span
-                        className={`absolute left-0 -bottom-1 sm:-bottom-2 w-full h-0.5 sm:h-0.75 bg-black transition-transform duration-300 ease-out origin-left ${
+                        className={`absolute left-0 -bottom-1 w-full h-0.5 sm:h-[2.5px] bg-black transition-transform duration-300 ease-out origin-left ${
                           isHovered ? "scale-x-100" : "scale-x-0"
                         }`}
                       />
@@ -294,11 +296,11 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Stopka menu */}
+          {/* Stopka menu – czyste, wyśrodkowane linki do Social Mediów */}
           <div
-            style={{ transitionDelay: isOpen ? "320ms" : "0ms" }}
-            className={`flex items-center justify-center gap-8 md:gap-14 font-mono text-xs sm:text-sm text-neutral-500 border-t border-neutral-100 pt-6 mt-4 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-              isOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+            style={{ transitionDelay: isOpen ? "280ms" : "0ms" }}
+            className={`flex items-center justify-center gap-6 md:gap-14 font-mono text-xs sm:text-sm text-neutral-500 border-t border-neutral-100 pt-4 md:pt-6 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+              isOpen ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
             }`}
           >
             {nav.socials.map((social) => (
